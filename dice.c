@@ -8,14 +8,14 @@ enum { A_DICE = 5, B_DICE = 5, MAX_NAME = 20 };
 static void dice_A(int out[5]) {
     for (int i = 0; i < A_DICE; i++) {
         out[i] = rand() % 6 + 1;
-        printf("AÀÇ %d¹ø ÁÖ»çÀ§ÀÇ °ª: %d\n", i + 1, out[i]);
+        printf("Aì˜ %dë²ˆ ì£¼ì‚¬ìœ„ì˜ ê°’: %d\n", i + 1, out[i]);
     }
 }
 
 static void dice_B(int out[5]) {
     for (int i = 0; i < B_DICE; i++) {
         out[i] = rand() % 6 + 1;
-        printf("BÀÇ %d¹ø ÁÖ»çÀ§ÀÇ °ª: %d\n", i + 1, out[i]);
+        printf("Bì˜ %dë²ˆ ì£¼ì‚¬ìœ„ì˜ ê°’: %d\n", i + 1, out[i]);
     }
 }
 
@@ -34,7 +34,7 @@ static void ask_name(const char* prompt, char out[MAX_NAME]) {
         size_t len = strlen(out);
         if (len > 0 && out[len - 1] == '\n') out[len - 1] = '\0';
         if (out[0] == '\0') {
-            puts("ºó ÀÌ¸§Àº ¾È µË´Ï´Ù. ´Ù½Ã ÀÔ·ÂÇÏ¼¼¿ä.");
+            puts("ë¹ˆ ì´ë¦„ì€ ì•ˆ ë©ë‹ˆë‹¤. ë‹¤ì‹œ ì…ë ¥í•˜ì„¸ìš”.");
             continue;
         }
         break;
@@ -51,7 +51,7 @@ static char ask_choice(const char* prompt) {
         if (c == 'A' || c == 'a' || c == 'B' || c == 'b') {
             return (char)c;
         }
-        puts("Àß¸øµÈ ¼±ÅÃÀÔ´Ï´Ù. A ¶Ç´Â B¸¦ ÀÔ·ÂÇÏ¼¼¿ä.");
+        puts("ì˜ëª»ëœ ì„ íƒì…ë‹ˆë‹¤. A ë˜ëŠ” Bë¥¼ ì…ë ¥í•˜ì„¸ìš”.");
     }
 }
 
@@ -61,14 +61,14 @@ static int ask_int_in_range(const char* prompt, int lo, int hi) {
         printf("%s", prompt);
         int ok = scanf("%d", &v);
         if (ok != 1) {
-            puts("Á¤¼ö¸¦ ÀÔ·ÂÇÏ¼¼¿ä.");
+            puts("ì •ìˆ˜ë¥¼ ì…ë ¥í•˜ì„¸ìš”.");
             clearerr(stdin);
             flush_line();
             continue;
         }
         flush_line();
         if (v < lo || v > hi) {
-            printf("%d ~ %d »çÀÌ·Î ÀÔ·ÂÇÏ¼¼¿ä.\n", lo, hi);
+            printf("%d ~ %d ì‚¬ì´ë¡œ ì…ë ¥í•˜ì„¸ìš”.\n", lo, hi);
             continue;
         }
         return v;
@@ -89,44 +89,44 @@ static int score_dice(int dice[5]) {
 static void bidding_phase(const char* p1, const char* p2,
     int* p1Score, int* p2Score,
     int diceA[5], int diceB[5]) {
-    char choice1 = ask_choice("ÇÃ·¹ÀÌ¾î 1 - µ¦À» °í¸¨´Ï´Ù (A/B): ");
-    int bid1 = ask_int_in_range("ÀÔÂûÇÒ ±İ¾×(0~100,000): ", 0, 100000);
-    printf("%s: µ¦ %c, ±İ¾× %d¿ø\n", p1, choice1, bid1);
+    char choice1 = ask_choice("í”Œë ˆì´ì–´ 1 - ë±ì„ ê³ ë¦…ë‹ˆë‹¤ (A/B): ");
+    int bid1 = ask_int_in_range("ì…ì°°í•  ê¸ˆì•¡(0~100,000): ", 0, 100000);
+    printf("%s: ë± %c, ê¸ˆì•¡ %dì›\n", p1, choice1, bid1);
 
-    char choice2 = ask_choice("ÇÃ·¹ÀÌ¾î 2 - µ¦À» °í¸¨´Ï´Ù (A/B): ");
-    int bid2 = ask_int_in_range("ÀÔÂûÇÒ ±İ¾×(0~100,000): ", 0, 100000);
-    printf("%s: µ¦ %c, ±İ¾× %d¿ø\n", p2, choice2, bid2);
+    char choice2 = ask_choice("í”Œë ˆì´ì–´ 2 - ë±ì„ ê³ ë¦…ë‹ˆë‹¤ (A/B): ");
+    int bid2 = ask_int_in_range("ì…ì°°í•  ê¸ˆì•¡(0~100,000): ", 0, 100000);
+    printf("%s: ë± %c, ê¸ˆì•¡ %dì›\n", p2, choice2, bid2);
 
     if (choice1 == choice2 && bid1 == bid2) {
-        puts("µ¿ÀÏ µ¦¡¤µ¿ÀÏ ±İ¾× ¡æ ·£´ı ¹èÁ¤");
+        puts("ë™ì¼ ë±Â·ë™ì¼ ê¸ˆì•¡ â†’ ëœë¤ ë°°ì •");
         if (rand() % 2 == 0) {
-            printf("%s ½Â, %s ÆĞ\n", p1, p2);
+            printf("%s ìŠ¹, %s íŒ¨\n", p1, p2);
             choice2 = opposite_deck(choice1);
         }
         else {
-            printf("%s ½Â, %s ÆĞ\n", p2, p1);
+            printf("%s ìŠ¹, %s íŒ¨\n", p2, p1);
             choice1 = opposite_deck(choice2);
         }
     }
     else if (choice1 == choice2) {
         if (bid1 > bid2) {
             choice2 = opposite_deck(choice1);
-            printf("%s°¡ ³ôÀº ±İ¾×\n", p1);
+            printf("%sê°€ ë†’ì€ ê¸ˆì•¡\n", p1);
         }
         else {
             choice1 = opposite_deck(choice2);
-            printf("%s°¡ ³ôÀº ±İ¾×\n", p2);
+            printf("%sê°€ ë†’ì€ ê¸ˆì•¡\n", p2);
         }
     }
 
-    // ÀÔÂû Á¡¼ö ¹İ¿µ
+    // ì…ì°° ì ìˆ˜ ë°˜ì˜
     if (choice1 == choice2) {
-        // ¼­·Î ¿øÇÏ´Â µ¦À» °¡Áü
+        // ì„œë¡œ ì›í•˜ëŠ” ë±ì„ ê°€ì§
         *p1Score -= bid1;
         *p2Score -= bid2;
     }
     else {
-        // ÇÑ ¸íÀº ¿øÇÏ´Â µ¦, ÇÑ ¸íÀº ¾Æ´Ñ µ¦
+        // í•œ ëª…ì€ ì›í•˜ëŠ” ë±, í•œ ëª…ì€ ì•„ë‹Œ ë±
         if (choice1 == 'A') {
             *p1Score -= bid1;
             *p2Score += bid2;
@@ -141,7 +141,7 @@ static void bidding_phase(const char* p1, const char* p2,
 static void scoring_phase(const char* pname, int* pScore, int diceSet[5]) {
     int score = score_dice(diceSet);
     *pScore += score;
-    printf("%s°¡ ÁÖ»çÀ§ Á¡¼ö %dÁ¡À» È¹µæ!\n", pname, score);
+    printf("%sê°€ ì£¼ì‚¬ìœ„ ì ìˆ˜ %dì ì„ íšë“!\n", pname, score);
 }
 
 int main(void) {
@@ -150,34 +150,34 @@ int main(void) {
     char p1[MAX_NAME], p2[MAX_NAME];
     int p1Score = 0, p2Score = 0;
 
-    ask_name("ÇÃ·¹ÀÌ¾î 1 ÀÌ¸§: ", p1);
-    ask_name("ÇÃ·¹ÀÌ¾î 2 ÀÌ¸§: ", p2);
+    ask_name("í”Œë ˆì´ì–´ 1 ì´ë¦„: ", p1);
+    ask_name("í”Œë ˆì´ì–´ 2 ì´ë¦„: ", p2);
 
     int diceA[5], diceB[5];
 
     for (int round = 1; round <= 13; round++) {
-        printf("\n=== ¶ó¿îµå %d ===\n", round);
+        printf("\n=== ë¼ìš´ë“œ %d ===\n", round);
 
         if (round != 13) {
-            puts("ÁÖ»çÀ§¸¦ ±¼¸³´Ï´Ù...");
+            puts("ì£¼ì‚¬ìœ„ë¥¼ êµ´ë¦½ë‹ˆë‹¤...");
             dice_A(diceA);
             dice_B(diceB);
             bidding_phase(p1, p2, &p1Score, &p2Score, diceA, diceB);
         }
 
         if (round != 1) {
-            puts("\nÁ¡¼ö È¹µæ ´Ü°è:");
+            puts("\nì ìˆ˜ íšë“ ë‹¨ê³„:");
             scoring_phase(p1, &p1Score, diceA);
             scoring_phase(p2, &p2Score, diceB);
         }
 
-        printf("\nÇöÀç Á¡¼ö: %s = %d, %s = %d\n", p1, p1Score, p2, p2Score);
+        printf("\ní˜„ì¬ ì ìˆ˜: %s = %d, %s = %d\n", p1, p1Score, p2, p2Score);
     }
 
-    printf("\n=== ÃÖÁ¾ Á¡¼ö ===\n%s: %d\n%s: %d\n", p1, p1Score, p2, p2Score);
-    if (p1Score > p2Score) printf("%s ½Â¸®!\n", p1);
-    else if (p2Score > p1Score) printf("%s ½Â¸®!\n", p2);
-    else printf("¹«½ÂºÎ!\n");
+    printf("\n=== ìµœì¢… ì ìˆ˜ ===\n%s: %d\n%s: %d\n", p1, p1Score, p2, p2Score);
+    if (p1Score > p2Score) printf("%s ìŠ¹ë¦¬!\n", p1);
+    else if (p2Score > p1Score) printf("%s ìŠ¹ë¦¬!\n", p2);
+    else printf("ë¬´ìŠ¹ë¶€!\n");
 
     return 0;
 }
